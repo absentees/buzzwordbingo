@@ -4,15 +4,20 @@
  */
 
 var express = require('express')
-  , routes = require('./routes');
+    , site = require('./routes/site.js')
+    , game = require('./routes/game.js')
+    , word = require('./routes/word.js')
+    , mongoose = require('mongoose');
 
 var app = module.exports = express.createServer();
+
+var db = mongoose.connect('mongodb://localhost/buzzwordbingo');
 
 // Configuration
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
-  app.set('view engine', 'ejs');
+  app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -27,9 +32,18 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-// Routes
+// Routes - Site General
+app.get('/', site.index);
 
-app.get('/', routes.index);
+// Routes - Games
+
+app.all('/games', game.list);
+
+// Routes - Words
+
+app.all('/words', word.list);
+
+// App listen
 
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
