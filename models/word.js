@@ -8,7 +8,7 @@ var Word = new Schema({
    found : Number
 });
 
-Link.virtual('id')
+Word.virtual('id')
     .get(function() {
         return this._id.toHexString();
     });

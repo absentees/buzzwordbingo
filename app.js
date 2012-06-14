@@ -6,12 +6,9 @@
 var express = require('express')
     , site = require('./routes/site.js')
     , game = require('./routes/game.js')
-    , word = require('./routes/word.js')
-    , mongoose = require('mongoose');
+    , word = require('./routes/word.js');
 
 var app = module.exports = express.createServer();
-
-var db = mongoose.connect('mongodb://localhost/buzzwordbingo');
 
 // Configuration
 
@@ -42,6 +39,8 @@ app.all('/games', game.list);
 // Routes - Words
 
 app.all('/words', word.list);
+app.get('/words/create',word.create);
+app.post('/words/create',word.post);
 
 // App listen
 
